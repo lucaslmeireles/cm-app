@@ -1,0 +1,208 @@
+{
+    "Dashboard": {
+        "welcome": "Bem vindo, {user}",
+        "description": "Veja as informações da sua organização",
+        "jobs": {
+            "title": "Seus cargos",
+            "description": "Veja os cargos do seu departamento",
+            "see_more": "Veja mais",
+            "any_jobs": "Você não tem nenhum cargo",
+            "n_employee": "e mais {count}",
+            "no_employee": "Sem funcionários"
+        },
+        "rank": {
+            "title": "Ranking do departamento",
+            "description": "Conheça as melhores perfomance do seu time"
+        },
+        "info": {
+            "title": "Informação do departamento",
+            "description": "Descubra como é o seu time",
+            "no_data": "Sem dados",
+            "employee_title": "Funcionários nesse departamento",
+            "employees": "{number, plural, =0 {sem funcionários} =1 {funcionário} other {# funcionários}}",
+            "avg_age_title": "Idade média",
+            "avg_age": "{number ,plural , =0 {sem dados}  =1{# ano}  other {# anos}}",
+            "avg_time_title": "Tempo médio de empresa",
+            "avg_time": "{number , plural, =0 {sem dados}  =1{# ano}  other {# anos}}"
+        }
+    },
+    "Assessment": {
+        "title": "Avaliações",
+        "description": "Veja as avaliações do seu departamento",
+        "no_assessments": "Sem avaliações",
+        "see_more": "Veja mais",
+        "new_assessment": "Nova avaliação",
+        "new_assessment_description": "Crie uma nova avaliação para o seu departamento",
+        "new_assessment_button": "Criar avaliação",
+        "score": "Nota",
+        "metric": "Metrica",
+        "page_title": "Avaliação de {name}"
+    },
+
+    "Employee": {
+        "Add": {
+            "title": "Adicionar funcionário",
+            "description": "Adicione um novo funcionário ao seu departamento",
+            "name": "Nome",
+            "email": "Email",
+            "register": "Matrícula",
+            "phone": "Telefone",
+            "phone2": "Telefone 2",
+            "birthday": "Data de nascimento",
+            "pick_date": "Escolha uma data",
+            "entry_date": "Data de admissão",
+            "address": "Endereço",
+            "department": "Departamento",
+            "job": "Cargo",
+            "pick_job": "Escolha um cargo",
+            "no_job": "Sem cargos",
+            "no_department": "Sem departamentos",
+            "submit": "Adicionar",
+            "title_edit": "Edite o funcionário",
+            "description_edit": "Edite as informações do funcionário",
+            "btn_add": "Adicionar",
+            "btn_edit": "Editar"
+        },
+        "View": {
+            "job": "Cargo",
+            "no_job": "Sem cargos",
+            "formation": "Formações e cursos",
+            "no_formation": "Sem cursos ou formações",
+            "assessment": "Avaliações",
+            "no_assessments": "Sem avaliações",
+            "created_by": "Criado por {name} em {date}",
+            "add_assessments": "Adicionar avaliação",
+            "my_manager": "Supervisores",
+            "no_my_manager": "Sem supervisores",
+            "add_my_manager": "Adicionar supervisor",
+            "manager": "supervisor"
+        },
+        "Main": {
+            "title": "Funcionários",
+            "description": "Veja os funcionários do seu departamento",
+            "no_employees": "Sem funcionários",
+            "add_btn": "Adicionar",
+            "see_more": "Veja mais",
+            "add_employee": "Adicionar funcionário",
+            "table": {
+                "name": "Nome",
+                "job": "Cargo",
+                "register": "Matrícula",
+                "score": "Nota",
+                "department": "Departamento",
+                "tendency": "Tendência",
+                "entry_date": "Data de admissão",
+                "actions": "Ações",
+                "view": "Ver perfil",
+                "create": "Criar",
+                "assessment": "Avaliação",
+                "promote": "Promover",
+                "edit": "Editar",
+                "delete": "Deletar",
+                "filter": "Pesquisar",
+                "next": "Próximo",
+                "previous": "Anterior"
+            }
+        }
+    },
+
+    "Formation": {
+        "title": "Nova qualificação",
+        "add_formation": "Adicionar qualificação",
+        "add_btn": "Adicionar",
+        "name": "Nome",
+        "type": "Tipo",
+        "no_type": "Não existe esse tipo",
+        "success_form": "Qualificação adicionada",
+        "error_form": "Algo deu errado"
+    },
+
+    "Job": {
+        "title": "Seus cargos",
+        "department": "Departamento",
+        "no_department": "Sem departamentos",
+        "employees": "Funcionários",
+        "no_employees": "Sem funcionários",
+        "metrics": "Metricas",
+        "no_metrics": "Sem metricas",
+        "metrics_description": "Metricas para esse cargo",
+        "org": "Organização"
+    },
+
+    "Header": {
+        "dashboard": "Dashboard",
+        "employees": "Funcionários",
+        "assessment": "Avaliações",
+        "profile": "Perfil",
+        "admin": "Admin"
+    },
+
+    "Metrics": {
+        "title": "Metricas",
+        "no_metrics": "Sem metricas",
+        "description": "Veja suas metricas aqui",
+        "see_more": "Veja mais",
+        "inter_skill": "Habilidades interpessoais",
+        "tech_skill": "Habilidades técnicas"
+    },
+
+    "Admin": {
+        "welcome": "Bem vindo, {user}",
+        "description": "Veja as informações da sua organização",
+        "settings": "Abrir parametros",
+        "setup": {
+            "title": "Configure a sua organização",
+            "add_metric": "Adicione metricas",
+            "add_department": "Adicione departamentos",
+            "add_job": "Adicione cargos",
+            "add_users": "Adcione usuarios"
+        },
+        "page": {
+            "title": "Dashboard - Admin",
+            "description": "Veja as informações da sua organização"
+        }
+    },
+
+    "Department": {
+        "title": "Seus departamentos",
+        "description": "Veja seus departamentos",
+        "employees": "Funcionários",
+        "n_employees": "{number, plural, =0 {sem funcionários} =1 {funcionário} other {# funcionários}}",
+        "no_employees": "Sem funcionários",
+        "job": "Cargos",
+        "n_jobs": "{number, plural, =0 {sem cargo} =1 {cargo} other {# cargos}}",
+        "no_job": "Sem cargos",
+        "n_metrics": "{number, plural, =0 {sem metricas} =1 {metrica} other {# metricas}}",
+        "managers": "Supervisores",
+        "no_managers": "Sem supervisores",
+        "no_data": "Sem dados",
+        "see_more": "Veja mais",
+        "title_edit": "Edite o departamento",
+        "description_edit": "Edite as informações do departamento",
+        "name": "Nome",
+        "metric": "Metricas",
+        "jobs": "Cargos",
+        "title_add": "Adicionar departamento",
+        "description_add": "Adicione um novo departamento",
+        "btn_add": "Adicionar",
+        "success": "Departamento criado",
+        "error": "Algo errado aconteceu",
+        "info": "Informações do departamento"
+    },
+
+    "Absence": {
+        "title": "Faltas",
+        "month": "mês",
+        "year": "ano",
+        "name": "faltas",
+        "main": {
+            "date": "Data",
+            "justification": "Jutificativa",
+            "created_by": "Lançado por",
+            "filter": "Pesquisar",
+            "next": "Próximo",
+            "previous": "Anterior",
+            "title": "Acompanhe todas as faltas do funcionário"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "competence-manager",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "start": "turbo start",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start:api": "node apps/api/dist/main",
+    "start:web": "node apps/web/server.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.2",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "crypto": "^1.0.1"
+  },
+  "packageManager": "yarn@1.22.2"
+}

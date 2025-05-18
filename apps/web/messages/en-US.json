@@ -1,0 +1,29 @@
+{
+    "Dashboard": {
+      "welcome": "Welcome, {user}",      
+      "description": "See you organization info",
+      "jobs": {
+        "title": "Your Jobs",
+        "description": "See the jobs for your department",
+        "see_more": "See more",
+        "any_jobs": " You dont have any jobs",
+        "n_employee": "and more {count}",
+        "no_employee": "No employees"
+    },
+      "rank": {
+        "title": "Depatarment Raking",
+        "description": "Know the best perfomance in your team"
+      },
+      "info": {
+        "title": "Depatarments Info",
+        "description": "See the your department here",
+        "no_data": "You don&apos;t have any data.",
+        "employee_title": "Employees",
+        "employees": "{number, plural, =0 {No employees} =1 {# employee} other {# employees}}",
+        "avg_age_title": "Average age",
+        "avg_age": "{number ,plural , =0 {No data}  =1{# year}  other {# years}}",
+        "avg_time_title": "Avarege time of company",
+        "avg_time": "{number , plural, =0 {No data}  =1{# year}  other {# years}}"
+      }
+    }
+  }

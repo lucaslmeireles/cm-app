@@ -1,0 +1,19 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "src",
+    "../../apps/web/src/components/dashChart.tsx",
+    "../../apps/web/src/components/Header.tsx",
+    "../../apps/web/src/components/Providers.tsx",
+    "../../apps/web/src/components/radarChar.tsx"
+  ],
+  "exclude": ["node_modules", "dist"],
+  "paths": {
+    "@repo/ui/*": ["./src/*"],
+    "@/repo/components/ui/*": ["./src/components/ui/*"],
+    "@/store/*": ["../../apps/web/src/store/*"]
+  }
+}

@@ -1,0 +1,7 @@
+[submodule "competence-manager-web"]
+	path = /apps/web
+	url = https://github.com/lucaslmeireles/competence-manager-web.git
+[submodule "competence-manager-api"]
+	path = /apps/api
+	url = https://github.com/lucaslmeireles/competence-manager-api.git
+	branch = rbac

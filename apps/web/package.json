@@ -1,0 +1,50 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "check-types": "tsc --noEmit",
+    "build:prod": "next build",
+    "start:prod": "next start"
+  },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@repo/ui": "*",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.1.8",
+    "lucide-react": "^0.411.0",
+    "next": "14.2.5",
+    "next-auth": "^5.0.0-beta.20",
+    "next-intl": "^3.20.0",
+    "react": "^18",
+    "react-day-picker": "^8.10.0",
+    "react-dom": "^18",
+    "react-hook-form": "^7.52.2",
+    "rechart": "^0.0.1",
+    "recharts": "^2.12.7",
+    "sharp": "^0.33.4",
+    "swr": "^2.2.5",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
