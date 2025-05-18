@@ -37,7 +37,8 @@ import { metricSchema } from "@/schema/metric.schema";
 import { postNewMetric } from "@/fetch/metric/postNewMetric";
 import { useState } from "react";
 import { Metric } from "@/types/metric.type";
-import { revalidatePath } from "next/cache";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export function AddMetric() {
   const { toast } = useToast();
@@ -45,7 +46,6 @@ export function AddMetric() {
   const form = useForm<z.infer<typeof metricSchema>>({
     resolver: zodResolver(metricSchema),
   });
-  const [allowedToSend, setAllowedToSend] = useState(true);
 
   const onSubmit = async (values: z.infer<typeof metricSchema>) => {
     const data = await postNewMetric(values);
@@ -57,7 +57,7 @@ export function AddMetric() {
         variant: "destructive",
       });
       setMetrics([...metrics, values]);
-      form.reset({name: "", weight: "", type: "SoftSkill"});
+      form.reset({ name: "", weight: "", type: "SoftSkill" });
     }
     toast({
       title: "Metric created",
@@ -67,7 +67,15 @@ export function AddMetric() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="default">Add new metric</Button>
+        <Button
+          size="sm"
+          className="mt-2 w-4/12"
+          variant="expandIcon"
+          Icon={Plus}
+          iconPlacement="right"
+        >
+          Criar
+        </Button>
       </SheetTrigger>
       <SheetContent className="overflow-y-scroll">
         <SheetHeader>
