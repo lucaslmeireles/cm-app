@@ -10,6 +10,14 @@
     "start:api": "node apps/api/dist/main",
     "start:web": "node apps/web/server.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": "prettier --write"
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
@@ -23,7 +31,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "crypto": "^1.0.1"
+    "husky": "^9.1.7"
   },
   "packageManager": "yarn@1.22.2"
 }
