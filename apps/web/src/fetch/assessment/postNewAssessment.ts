@@ -9,7 +9,6 @@ export const postNewAssessment = async (
   const safeData = assessmentSchema.safeParse(newAssessment);
   if (!safeData.success) return safeData.error.errors;
   try {
-    console.log("error server");
     const newAssessment = await fetch(
       process.env.API_BASE_URL + "assessment/",
       {
@@ -23,9 +22,13 @@ export const postNewAssessment = async (
         },
       },
     );
+    if (!newAssessment.ok) {
+      const error = await newAssessment.json();
+      throw { error };
+    }
     const assessment = await newAssessment.json();
     return assessment;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };

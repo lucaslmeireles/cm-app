@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { Button } from "@/repo/ui/components/ui/button";
 import {
@@ -63,7 +62,6 @@ export default function AddAssessmentForm() {
       comments: "",
     },
   });
-  const employeeId = useSearchParams().get("employee");
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetchMetrics();
@@ -74,32 +72,39 @@ export default function AddAssessmentForm() {
     };
     fetchData();
   }, []);
-  async function onSubmit(data: typeof assessmentSchemaForm) {
+  async function onSubmit(data: z.infer<typeof assessmentSchemaForm>) {
     const user = await getUser();
-    if (!user) {
-      toast({
-        title: "Erro ao criar avaliação",
-        description: "Usuário não encontrado",
-        variant: "destructive",
-      });
-      return;
-    } else if (!employeeId) {
-      toast({
-        title: "Erro ao criar avaliação",
-        description: "Colaborador não encontrado",
-        variant: "destructive",
-      });
-    }
     try {
+      if (!employee_id || !user?.id) {
+        toast({
+          title: "Erro ao criar avaliação",
+          description: "Colaborador não encontrado",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!data.metrics) {
+        toast({
+          title: "Erro ao criar avaliação",
+          description: "Métricas não encontradas",
+          variant: "destructive",
+        });
+        return;
+      }
       const res = await postNewAssessment({
-        ...data,
-        metrics: data.metrics.map((metric) => ({
-          metric_id: metric.metric_id,
-          employee_id: employeeId,
-          score: metric.score,
-        })),
-        employee_id: employee_id,
-        evaluator_id: user?.id,
+        employee_id,
+        evaluator_id: user.id,
+        status: data.status || "DRAFT",
+        period_start: data.period_start || new Date(),
+        period_end: data.period_end || new Date(),
+        metrics: data.metrics.map(
+          (metric: { metric_id: string; score: number }) => ({
+            metric_id: metric.metric_id,
+            employee_id,
+            score: metric.score,
+          }),
+        ),
+        comments: data.comments,
       });
 
       toast({
@@ -109,7 +114,7 @@ export default function AddAssessmentForm() {
       console.error(error);
       toast({
         title: "Erro ao criar avaliação",
-        description: "Erro ao criar avaliação",
+        description: error.error.message,
         variant: "destructive",
       });
     }
@@ -121,7 +126,7 @@ export default function AddAssessmentForm() {
     <Card className="w-full h-full">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Link href={`/`}>
+          <Link href={`/employees/${employee_id}`}>
             <Button variant="outline" size="icon" className="h-8 w-8">
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -295,7 +300,7 @@ export default function AddAssessmentForm() {
                                   metrics.push({
                                     metric_id: metric.id,
                                     score: value,
-                                    employee_id: employeeId,
+                                    employee_id: employee_id,
                                   });
                                 }
 

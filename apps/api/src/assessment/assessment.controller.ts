@@ -28,6 +28,7 @@ export class AssessmentController {
   @Auditable(ResourceType.ASSESSMENT)
   @Post()
   create(@Body() createAssessmentDto: CreateAssessmentDto) {
+    console.log(createAssessmentDto);
     return this.assessmentService.create(createAssessmentDto);
   }
 

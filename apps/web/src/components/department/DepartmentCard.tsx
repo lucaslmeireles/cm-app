@@ -13,7 +13,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { AddDepartment } from "./addDepartment";
 
-export const DepartmentCard = async ({}) => {
+export const DepartmentCard = async () => {
   const t = await getTranslations("Department");
   const department: Department[] = await fetchDepartments();
 
