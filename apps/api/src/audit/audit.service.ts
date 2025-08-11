@@ -5,7 +5,7 @@ import { ResourceType } from '@prisma/client';
 @Injectable()
 export class AuditService {
     constructor(private db: DbService) {}
-
+    //TODO Usar o MONGODB pra fazer a coleta de dados de log, mais simples e mais rapdio tbm
     async createAuditLog({
         resourceType,
         resourceId,

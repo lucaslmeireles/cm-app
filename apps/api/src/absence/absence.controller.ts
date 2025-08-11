@@ -8,6 +8,7 @@ import {
     Delete,
     UseGuards,
 } from '@nestjs/common';
+import { Action } from 'src/ability/ability.factory';
 import { AbsencesService } from './absence.service';
 import { CreateAbsenceDto } from './dto/create-absence.dto';
 import { UpdateAbsenceDto } from './dto/update-absence.dto';
@@ -18,56 +19,65 @@ import { AbilityGuard } from 'src/ability/abilities.guard';
 import { Auditable } from 'src/audit/audit.decorator';
 import { ResourceType } from '@prisma/client';
 
+
 @UseGuards(JwTGuard, AbilityGuard)
 @Controller('absence')
 export class AbsencesController {
-    constructor(private readonly absencesService: AbsencesService) {}
+    constructor(private readonly absenceService: AbsenceService, private readonly absenceAnalyticsService: AbsenceAnalyticsService ) {}
 
+    @CheckAbilities({ action: Action.Create, subject: 'Absence' })
     @Auditable(ResourceType.ABSENCE)
     @Post()
     create(@Body() createAbsenceDto: CreateAbsenceDto) {
         return this.absencesService.create(createAbsenceDto);
     }
 
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get()
     findAll(@GetUser() user: ReqUser) {
         return this.absencesService.findAll(user);
     }
 
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id')
     findOne(@Param('id') id: string, @GetUser() user: ReqUser) {
         return this.absencesService.findOne(id, user);
     }
 
     //TODO Refactor
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id/chart/employee/month')
     chartByEmployeeMonth(@Param('id') id: string) {
-        return this.absencesService.chartByEmployeeMonth(id);
+        return this.absenceAnalyticsService.chartByEmployeeMonth(id);
     }
 
     //TODO Refactor
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id/chart/employee/year')
     chartByEmployeeYear(@Param('id') id: string) {
-        return this.absencesService.chartByEmployeeYear(id);
+        return this.absenceAnalyticsService.chartByEmployeeYear(id);
     }
-
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id/chart/department/month')
     chartByDepartmentMonth(@Param('id') id: string) {
-        return this.absencesService.chartByDepartmentMonth(id);
+        return this.absenceAnalyticsService.chartByDepartmentMonth(id);
     }
 
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id/chart/department/year')
     chartByDepartmentYear(@Param('id') id: string) {
-        return this.absencesService.chartByDepartmentYear(id);
+        return this.absenceAnalyticsService.chartByDepartmentYear(id);
     }
 
+    @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get('employee/:employee_id')
     findAllByEmployee(@Param('id') id: string, @GetUser() user: ReqUser) {
         return this.absencesService.findAllByEmployee(id, user);
     }
 
-    @Patch(':id')
+    @CheckAbilities({ action: Action.Update, subject: 'Absence' })
     @Auditable(ResourceType.ABSENCE)
+    @Patch(':id')
     update(
         @Param('id') id: string,
         @Body() updateAbsenceDto: UpdateAbsenceDto,
@@ -76,6 +86,7 @@ export class AbsencesController {
         return this.absencesService.update(id, updateAbsenceDto, user);
     }
 
+    @CheckAbilities({ action: Action.Remove, subject: 'Absence' })
     @Delete(':id')
     @Auditable(ResourceType.ABSENCE)
     remove(@Param('id') id: string, @GetUser() user: ReqUser) {

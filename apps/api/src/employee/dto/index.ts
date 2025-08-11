@@ -1,2 +1,2 @@
-export * from './createemployee.dto';
-export * from './editemployee.dto';
+export * from './create-employee.dto';
+export * from './edit-employee.dto';
