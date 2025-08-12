@@ -23,6 +23,7 @@ import { ArrowLeftFromLine, ArrowRightCircle, Calendar } from "lucide-react";
 import { AddAbsence } from "./addAbsence";
 import Link from "next/link";
 import { AbsenceItem } from "../molecules/AbsenceItem";
+import { AbsenceStats } from "../molecules/AbsenceStats";
 
 export default function AbsenceCard({ employee }: { employee: Employee }) {
   const {
@@ -54,16 +55,7 @@ export default function AbsenceCard({ employee }: { employee: Employee }) {
       </CardHeader>
       {absences.data && (
         <CardContent>
-          <p className="text-lg">Quantidade de faltas</p>
-          <div className="flex flex-row space-x-6 align-bottom w-4/5 pb-4">
-            <p className="text-2xl">{absences.data.count}</p>
-            <p>
-              {absences.data.justifi._count} <small>Justificadas</small>
-            </p>
-            <p>
-              {absences.data.no_justifi._count} <small>Não justificadas</small>
-            </p>
-          </div>
+          <AbsenceStats absences={absences.data.absences} />
           <p>Gráficos</p>
           <Carousel className=" m-auto w-10/12 my-3">
             <CarouselContent>
