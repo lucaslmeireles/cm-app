@@ -18,14 +18,18 @@ import { ptBR } from "date-fns/locale";
 import { Calendar } from "@/repo/ui/components/ui/calendar";
 import { cn } from "@/repo/ui/lib/utils";
 import { Field } from "react-hook-form";
+//TODO Colocar se é opcional ou se precisa passar por alguma função de validação
+
 
 type DateInputProps = {
   name: string;
   span: string;
   field: Field;
+  optional?: boolean;
+  validationFn?: (value: Date | null) => boolean;
 };
 
-export const DateInput = ({ name, span, field }: DateInputProps) => {
+export const DateInput = ({ name, span, field, optional, validationFn }: DateInputProps) => {
   const [open, setOpen] = useState(false);
   return (
     <FormItem className="flex flex-col">
@@ -57,9 +61,7 @@ export const DateInput = ({ name, span, field }: DateInputProps) => {
               field.onChange(e);
               setOpen((prev) => !prev);
             }}
-            disabled={(date) =>
-              date > new Date() || date < new Date("1900-01-01")
-            }
+            disabled={validationFn ? (date) => !validationFn(date) : (date) => new Date(date) < new Date("1900-01-01")}
             initialFocus
           />
         </PopoverContent>
