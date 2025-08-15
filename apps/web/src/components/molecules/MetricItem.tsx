@@ -3,7 +3,7 @@ import { Badge } from "../atoms/Badge";
 
 interface MetricItemProps {
   name: string;
-  type: string;
+  type?: string;
   score: number;
 }
 
@@ -21,9 +21,9 @@ export const MetricItem = ({ name, type, score }: MetricItemProps) => {
           <Text variant="body" weight="medium">
             {name}
           </Text>
-          <Text variant="caption" color="secondary">
+          {type && <Text variant="caption" color="secondary">
             {type}
-          </Text>
+          </Text>}
         </div>
         <Badge variant={getScoreVariant(score)} size="sm">
           {score}
