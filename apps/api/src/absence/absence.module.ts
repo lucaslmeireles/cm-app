@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AbsencesService } from './absence.service';
+import { AbsenceService } from './absence.service';
 import { AbsencesController } from './absence.controller';
 import { AbilityModule } from 'src/ability/ability.module';
+import { AbsenceAnalyticsService } from './absence-analytics.service';
 
 @Module({
     controllers: [AbsencesController],
-    providers: [AbsencesService],
+    providers: [AbsenceService, AbsenceAnalyticsService],
     imports: [AbilityModule],
 })
-export class AbsencesModule {}
+export class AbsenceModule {}

@@ -1,8 +1,6 @@
 import NextAuth from "next-auth";
 import authOptions from "./auth.options";
 import { authRoutes, DEFAULT_URL_REDIRECT, setupRoutes } from "./routes";
-import { checkConfig } from "./helpers/checkconfig";
-import { getToken } from "./helpers/getToken";
 
 const { auth } = NextAuth(authOptions);
 

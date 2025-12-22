@@ -9,7 +9,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { Action } from 'src/ability/ability.factory';
-import { AbsencesService } from './absence.service';
+import { AbsenceService } from './absence.service';
 import { CreateAbsenceDto } from './dto/create-absence.dto';
 import { UpdateAbsenceDto } from './dto/update-absence.dto';
 import { ReqUser } from 'src/types/requser.type';
@@ -18,7 +18,8 @@ import { JwTGuard } from 'src/auth/guards/jwt.guard';
 import { AbilityGuard } from 'src/ability/abilities.guard';
 import { Auditable } from 'src/audit/audit.decorator';
 import { ResourceType } from '@prisma/client';
-
+import { CheckAbilities } from 'src/ability/ability.decorator';
+import { AbsenceAnalyticsService } from './absence-analytics.service';
 
 @UseGuards(JwTGuard, AbilityGuard)
 @Controller('absence')
@@ -29,19 +30,19 @@ export class AbsencesController {
     @Auditable(ResourceType.ABSENCE)
     @Post()
     create(@Body() createAbsenceDto: CreateAbsenceDto) {
-        return this.absencesService.create(createAbsenceDto);
+        return this.absenceService.create(createAbsenceDto);
     }
 
     @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get()
     findAll(@GetUser() user: ReqUser) {
-        return this.absencesService.findAll(user);
+        return this.absenceService.findAll(user);
     }
 
     @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get(':id')
     findOne(@Param('id') id: string, @GetUser() user: ReqUser) {
-        return this.absencesService.findOne(id, user);
+        return this.absenceService.findOne(id, user);
     }
 
     //TODO Refactor
@@ -72,7 +73,7 @@ export class AbsencesController {
     @CheckAbilities({ action: Action.Read, subject: 'Absence' })
     @Get('employee/:employee_id')
     findAllByEmployee(@Param('id') id: string, @GetUser() user: ReqUser) {
-        return this.absencesService.findAllByEmployee(id, user);
+        return this.absenceService.findAllByEmployee(id, user);
     }
 
     @CheckAbilities({ action: Action.Update, subject: 'Absence' })
@@ -83,13 +84,13 @@ export class AbsencesController {
         @Body() updateAbsenceDto: UpdateAbsenceDto,
         @GetUser() user: ReqUser,
     ) {
-        return this.absencesService.update(id, updateAbsenceDto, user);
+        return this.absenceService.update(id, updateAbsenceDto, user);
     }
 
-    @CheckAbilities({ action: Action.Remove, subject: 'Absence' })
+    @CheckAbilities({ action: Action.Delete, subject: 'Absence' })
     @Delete(':id')
     @Auditable(ResourceType.ABSENCE)
     remove(@Param('id') id: string, @GetUser() user: ReqUser) {
-        return this.absencesService.remove(id, user);
+        return this.absenceService.remove(id, user);
     }
 }

@@ -14,13 +14,13 @@ import { AssessmentModule } from './assessment/assessment.module';
 import { DepartmentsModule } from './department/department.module';
 import { JobsModule } from './job/job.module';
 import { FormationsModule } from './formation/formation.module';
-import { AbsencesModule } from './absence/absence.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { PositionsModule } from './position/position.module';
 import { CarrersModule } from './carrer/carrer.module';
 import { AuditModule } from './audit/audit.module';
 import { AuditInterceptor } from './audit/audit.interceptor';
 import { EncryptionModule } from './encryption/encryption.module';
+import { AbsenceModule } from './absence/absence.module';
 
 @Module({
     imports: [
@@ -40,7 +40,7 @@ import { EncryptionModule } from './encryption/encryption.module';
         JobsModule,
 
         FormationsModule,
-        AbsencesModule,
+        AbsenceModule,
         PositionsModule,
         CarrersModule,
         AuditModule,
