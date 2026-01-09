@@ -108,7 +108,7 @@ export class OrgService {
 
     async getSupervisorChart(id: string) {
         const chart = await this.db
-            .$queryRaw`SELECT avg("Grade".score), "Metric".name as metric_name from "Grade" JOIN "Metric" on "Grade".metric_id = "Metric".id JOIN "Assessment" on "Assessment".manager_id = ${id}  GROUP BY "Metric".name`;
+            .$queryRaw`SELECT avg("Grade".score), "Metric".name as metric_name from "Grade" JOIN "Metric" on "Grade".metric_id = "Metric".id JOIN "Evaluation" on "Evaluation".evaluator_id = ${id}  GROUP BY "Metric".name`;
         return chart;
     }
 
@@ -122,4 +122,4 @@ export class OrgService {
 // querry geral  SELECT avg("Grade".score), "Metric".name FROM "Grade" join "Metric" on metric_id = "Metric".id GROUP BY "Metric".name
 // query por funcionario SELECT avg("Grade".score), "Metric".name, "Employee".name FROM "Grade" join "Metric" on metric_id = "Metric".id JOIN "Employee" on "Grade".employee_id = "Employee".id  WHERE "Grade".employee_id = 'ID' GROUP BY "Metric".name, "Employee".name;
 // query por departmento SELECT avg("Grade".score), "Department".name, "Metric".name from "Grade" JOIN "Metric" on "Grade".metric_id = "Metric".id JOIN "_DepartmentToEmployee" On "A" = 'ID' JOIN "Department"  on "A" = "Department".id GROUP BY "Metric".name, "Department".name
-// query por supervisor SELECT avg("Grade".score),  "Metric".name from "Grade" JOIN "Metric" on "Grade".metric_id = "Metric".id JOIN "Assessment" on "Assessment".manager_id = 'b496fc18-b140-442f-9c42-af478c2d9483'  GROUP BY "Metric".name
+// query por supervisor SELECT avg("Grade".score),  "Metric".name from "Grade" JOIN "Metric" on "Grade".metric_id = "Metric".id JOIN "Evaluation" on "Evaluation".evaluator_id = 'b496fc18-b140-442f-9c42-af478c2d9483'  GROUP BY "Metric".name

@@ -1,7 +1,6 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class GetEmployeeByDep {
-    @IsArray()
-    @IsString({ each: true })
-    department_id: string[];
+  @IsString()
+  department_id: string;
 }

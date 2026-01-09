@@ -1,372 +1,320 @@
 generator client {
-    provider = "prisma-client-js"
-    binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model AuditableEntity {
-    id            String       @id @default(uuid())
-    created_at    DateTime     @default(now())
-    updated_at    DateTime     @updatedAt
-    created_by    String?
-    updated_by    String?
-    deleted_at    DateTime?
-    resource_type ResourceType
-    resource_id   String
-    action        String
-    changes       Json?
-    tenant_id     Int
+  id            String       @id @default(uuid())
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  created_by    String?
+  updated_by    String?
+  deleted_at    DateTime?
+  resource_type ResourceType
+  resource_id   String
+  action        String
+  changes       Json?
+  tenant_id     Int
 
-    @@index([resource_type, resource_id])
-    @@index([tenant_id])
-    @@index([created_at])
+  @@index([resource_type, resource_id])
+  @@index([tenant_id])
+  @@index([created_at])
 }
 
 model Organization {
-    id                   Int                    @id() @default(autoincrement())
-    name                 String
-    members              User[]
-    employees            Employee[]
-    jobs                 Job[]
-    departments          Department[]
-    metrics              Metric[]
-    created_At           DateTime               @default(now())
-    updated_At           DateTime               @default(now()) @updatedAt
-    OrganizationSettings OrganizationSettings[]
-}
-
-model OrganizationSettings {
-    id         String       @id @default(uuid())
-    tenant_id  Int
-    settings   Json? // Ex.: {"theme":"dark","locale":"en","extra":{"..."}}
-    org        Organization @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-    logo       String?
-    created_at DateTime     @default(now())
-    updated_at DateTime     @updatedAt
-
-    @@index([tenant_id])
+  id          Int          @id() @default(autoincrement())
+  name        String
+  users       User[]
+  employees   Employee[]
+  departments Department[]
+  metrics     Metric[]
+  roles       Role[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
 }
 
 model User {
-    id          String       @id @default(uuid())
-    email       String       @unique
-    password    String
-    tenant_id   Int
-    role_id     String
-    active      Boolean      @default(false)
-    employee_id String?      @unique // Relação opcional com Employee
-    employee    Employee?    @relation(fields: [employee_id], references: [id], onDelete: SetNull)
-    role        Role         @relation(fields: [role_id], references: [id])
-    org         Organization @relation(fields: [tenant_id], references: [id])
-    created_at  DateTime     @default(now())
-    updated_at  DateTime     @updatedAt
-    deleted_at  DateTime?
-    Absence     Absence[]
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String
+  tenant_id   Int
+  role_id     String
+  active      Boolean      @default(false)
+  employee_id String?      @unique // Relação opcional com Employee
+  employee    Employee?    @relation(fields: [employee_id], references: [id], onDelete: SetNull)
+  role        Role         @relation(fields: [role_id], references: [id])
+  org         Organization @relation(fields: [tenant_id], references: [id])
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  deleted_at  DateTime?
 
-    @@index([tenant_id])
-    @@index([role_id])
+  @@index([tenant_id])
+  @@index([role_id])
 }
 
 model Department {
-    id        String       @id @default(uuid())
-    name      String
-    employees Employee[]
-    jobs      Job[]
-    metrics   Metric[]
-    positions Position[]
-    org       Organization @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-    tenant_id Int
+  id        String       @id @default(uuid())
+  name      String
+  employees Employee[]
+  positions Position[]
+  org       Organization @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant_id Int
+
+  @@index([tenant_id])
 }
 
-model Formation {
-    id          String     @id @default(uuid())
-    name        String
-    type        CourseType
-    employee    Employee   @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-    employee_id String
+model Education {
+  id              String     @id @default(uuid())
+  name            String
+  start_date      DateTime?
+  end_date        DateTime?
+  institution     String?
+  degree          String?
+  field           String?
+  grade           String?
+  description     String?
+  certificate     String?
+  certificate_url String?
+  type            CourseType
+  employee        Employee   @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  employee_id     String
+
+  @@index([employee_id])
 }
 
 model Employee {
-    id                String   @id @default(uuid())
-    register          String   @unique
-    name              String
-    birthday          DateTime
-    entry_date        DateTime
-    score             Int      @default(0)
-    profile_pic       String?
-    tenant_id         Int
-    phone_encrypted   String? // campo criptografado
-    email_encrypted   String? // campo criptografado
-    address_encrypted String? // campo criptografado
+  id                String   @id @default(uuid())
+  register          String   @unique
+  name              String
+  birthday          DateTime
+  entry_date        DateTime
+  score             Int      @default(0)
+  profile_pic       String?
+  tenant_id         Int
+  phone_encrypted   String?
+  email_encrypted   String?
+  address_encrypted String?
 
-    // Auto-relacionamento para hierarquia
-    manager_id   String?
-    manager      Employee?  @relation("EmployeeHierarchy", fields: [manager_id], references: [id])
-    subordinates Employee[] @relation("EmployeeHierarchy")
+  manager_id   String?
+  manager      Employee?  @relation("EmployeeHierarchy", fields: [manager_id], references: [id])
+  subordinates Employee[] @relation("EmployeeHierarchy")
 
-    // Relações existentes modificadas
-    data_consent         DataConsent[]
-    career_paths         CareerPath[]
-    org                  Organization  @relation(fields: [tenant_id], references: [id])
-    user                 User? // Relação inversa com User
-    disc                 DISC?
-    department           Department[]
-    formations           Formation[]
-    grades               Grade[]
-    absences             Absence[]
-    given_assessments    Assessment[]  @relation("givenAssessments")
-    received_assessments Assessment[]  @relation("receivedAssessments")
-    approved_absences    Absence[]     @relation("absenceApprovals")
-    current_position_id  String?
-    current_position     Position?     @relation(fields: [current_position_id], references: [id])
-    // Campos de controle
-    created_at           DateTime      @default(now())
-    updated_at           DateTime      @updatedAt
-    deleted_at           DateTime?
-    is_active            Boolean       @default(true)
+  org                  Organization @relation(fields: [tenant_id], references: [id])
+  user                 User?
+  department_id        String
+  department           Department?  @relation(fields: [department_id], references: [id])
+  educations           Education[]
+  absences             Absence[]    @relation("employeeAbsences")
+  given_evaluations    Evaluation[] @relation("givenEvaluations")
+  received_evaluations Evaluation[] @relation("receivedEvaluations")
+  approved_absences    Absence[]    @relation("absenceApprovals")
+  position_id          String
+  position             Position     @relation(fields: [position_id], references: [id], onDelete: Cascade)
+  grades               Grade[]
+  career_paths         CareerPath[]
 
-    @@index([tenant_id])
-    @@index([manager_id])
-    @@index([register])
-}
-
-model DataConsent {
-    id         String    @id @default(uuid())
-    employeeId String
-    granted_at DateTime  @default(now())
-    revoked_at DateTime?
-
-    employee Employee @relation(fields: [employeeId], references: [id])
+  @@index([tenant_id])
+  @@index([manager_id])
+  @@index([register])
 }
 
 model CareerPath {
-    id          String       @id @default(uuid())
-    employee_id String
-    start_date  DateTime     @default(now())
-    target_date DateTime?
-    status      CareerStatus @default(IN_PROGRESS)
-    description String?
-    employee    Employee     @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-    steps       CareerStep[]
-    created_at  DateTime     @default(now())
-    updated_at  DateTime     @updatedAt
+  id          String       @id @default(uuid())
+  employee_id String
+  start_date  DateTime     @default(now())
+  target_date DateTime?
+  status      CareerStatus @default(IN_PROGRESS)
+  description String?
+  employee    Employee     @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  steps       CareerStep[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
 
-    @@index([employee_id])
+  @@index([employee_id])
 }
 
 model CareerStep {
-    id             String     @id @default(uuid())
-    career_path_id String
-    position_id    String
-    order_number   Int // Ordem do passo na carreira
-    achieved       Boolean    @default(false)
-    achieved_date  DateTime?
-    requirements   Json? // Requisitos específicos para este passo
-    career_path    CareerPath @relation(fields: [career_path_id], references: [id], onDelete: Cascade)
-    position       Position   @relation(fields: [position_id], references: [id])
-    created_at     DateTime   @default(now())
-    updated_at     DateTime   @updatedAt
+  id             String     @id @default(uuid())
+  career_path_id String
+  position_id    String
+  order_number   Int // Ordem do passo na carreira
+  achieved       Boolean    @default(false)
+  achieved_date  DateTime?
+  requirements   Json? // Requisitos específicos para este passo
+  career_path    CareerPath @relation(fields: [career_path_id], references: [id], onDelete: Cascade)
+  position       Position   @relation(fields: [position_id], references: [id])
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
 
-    @@unique([career_path_id, order_number])
-    @@index([career_path_id])
-    @@index([position_id])
+  @@unique([career_path_id, order_number])
+  @@index([career_path_id])
+  @@index([position_id])
 }
 
 model Role {
-    id    String @id @default(uuid())
-    name  String @unique
-    users User[]
+  id             String        @id @default(uuid())
+  name           String        @unique
+  controls       Json?
+  users          User[]
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+
+  @@index([organizationId])
 }
 
 model Metric {
-    id         String        @id @default(uuid())
-    name       String
-    type       MetricType
-    weight     Int
-    department Department[]
-    jobs       Job[]
-    grade      Grade[]
-    org        Organization? @relation(fields: [tenant_id], references: [id])
-    tenant_id  Int?
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  org         Organization? @relation(fields: [tenant_id], references: [id])
+  tenant_id   Int?
+  grades      Grade[]
+
+  @@index([tenant_id])
 }
 
-model Job {
-    id         String       @id @default(uuid())
-    name       String
-    type       JobType
-    department Department[]
-    metrics    Metric[]
-    positions  Position[]
-    org        Organization @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-    tenant_id  Int          @default(1)
-}
+model Evaluation {
+  id           String           @id @default(uuid())
+  employee_id  String
+  evaluator_id String // ID do gerente que avaliou
+  status       EvaluationStatus @default(DRAFT)
+  period_start DateTime
+  period_end   DateTime
+  comments     String?
+  employee     Employee         @relation("receivedEvaluations", fields: [employee_id], references: [id], onDelete: Cascade)
+  evaluator    Employee         @relation("givenEvaluations", fields: [evaluator_id], references: [id], onDelete: Cascade)
+  grades       Grade[]
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
 
-model Assessment {
-    id           String           @id @default(uuid())
-    employee_id  String
-    evaluator_id String // ID do gerente que avaliou
-    status       AssessmentStatus @default(DRAFT)
-    period_start DateTime
-    period_end   DateTime
-    comments     String?
-    employee     Employee         @relation("receivedAssessments", fields: [employee_id], references: [id])
-    evaluator    Employee         @relation("givenAssessments", fields: [evaluator_id], references: [id])
-    metrics      Grade[]
-    created_at   DateTime         @default(now())
-    updated_at   DateTime         @updatedAt
-
-    @@index([employee_id, period_start, period_end])
-    @@index([evaluator_id])
+  @@index([employee_id, period_start, period_end])
+  @@index([evaluator_id])
 }
 
 model Grade {
-    id            String     @id @default(uuid())
-    employee_id   String
-    assessment_id String
-    metric_id     String
-    score         Int
-    employee      Employee   @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-    metric        Metric     @relation(fields: [metric_id], references: [id])
-    assessment    Assessment @relation(fields: [assessment_id], references: [id], onDelete: Cascade)
-}
-
-model DISC {
-    id            String   @id @default(uuid())
-    employee_id   String   @unique
-    D             Int
-    I             Int
-    S             Int
-    C             Int
-    employee      Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-    lastUpdatedAt DateTime @updatedAt
+  id            String     @id @default(uuid())
+  employee_id   String
+  evaluation_id String
+  metric_id     String
+  score         Int
+  employee      Employee   @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  metric        Metric     @relation(fields: [metric_id], references: [id])
+  evaluation    Evaluation @relation(fields: [evaluation_id], references: [id], onDelete: Cascade)
 }
 
 model Absence {
-    id            String      @id @default(uuid())
-    employee_id   String
-    approver_id   String // ID do gerente que aprovou
-    type          AbsenceType
-    start_date    DateTime
-    end_date      DateTime
-    justification String?
-    documents     String? // URLs dos documentos
-    status        String      @default("PENDING")
-    employee      Employee    @relation(fields: [employee_id], references: [id])
-    approver      Employee    @relation("absenceApprovals", fields: [approver_id], references: [id])
-    created_at    DateTime    @default(now())
-    updated_at    DateTime    @updatedAt
-    User          User?       @relation(fields: [userId], references: [id])
-    userId        String?
+  id            String      @id @default(uuid())
+  employee_id   String
+  approver_id   String // ID do gerente que aprovou
+  type          AbsenceType
+  start_date    DateTime
+  end_date      DateTime
+  justification String?
+  documents     String? // URLs dos documentos
+  status        String      @default("PENDING")
+  employee      Employee    @relation("employeeAbsences", fields: [employee_id], references: [id], onDelete: Cascade)
+  approver      Employee    @relation("absenceApprovals", fields: [approver_id], references: [id], onDelete: Cascade)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
 
-    @@index([employee_id, start_date, end_date])
-    @@index([approver_id])
+  @@index([employee_id, start_date, end_date])
+  @@index([approver_id])
 }
 
 model Position {
-    id            String       @id @default(uuid())
-    name          String
-    job_id        String
-    department_id String
-    level         Int          @default(1)
-    requirements  String?
-    is_active     Boolean      @default(true)
-    max_slots     Int? // Número máximo de vagas
-    job           Job          @relation(fields: [job_id], references: [id])
-    department    Department   @relation(fields: [department_id], references: [id])
-    salaries      Salary[]
-    career_steps  CareerStep[]
-    employees     Employee[]
-    created_at    DateTime     @default(now())
-    updated_at    DateTime     @updatedAt
+  id            String       @id @default(uuid())
+  name          String
+  department_id String
+  level         Int          @default(1)
+  requirements  String?
+  is_active     Boolean      @default(true)
+  max_slots     Int? // Número máximo de vagas
+  department    Department   @relation(fields: [department_id], references: [id], onDelete: Cascade)
+  employees     Employee[]
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  career_steps  CareerStep[]
+  salaries      Salary[]
 
-    @@index([job_id, department_id])
+  @@index([department_id])
 }
 
 model Salary {
-    id          String     @id @default(uuid())
-    position_id String
-    value       Decimal    @db.Decimal(10, 2)
-    currency    String     @default("BRL")
-    type        SalaryType @default(MONTHLY)
-    start_date  DateTime
-    end_date    DateTime?
-    approved_by String // ID do gerente que aprovou
-    position    Position   @relation(fields: [position_id], references: [id])
-    created_at  DateTime   @default(now())
-    updated_at  DateTime   @updatedAt
+  id          String     @id @default(uuid())
+  position_id String
+  value       Decimal    @db.Decimal(10, 2)
+  currency    String     @default("BRL")
+  type        SalaryType @default(MONTHLY)
+  start_date  DateTime
+  end_date    DateTime?
+  approved_by String // ID do gerente que aprovou
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  position    Position   @relation(fields: [position_id], references: [id], onDelete: Cascade)
 
-    @@index([position_id, start_date])
-}
-
-enum MetricType {
-    HardSkill
-    SoftSkill
-}
-
-enum JobType {
-    WhiteCollar
-    BlueCollar
+  @@index([position_id, start_date])
 }
 
 enum CourseType {
-    Bachelor
-    Master
-    MBA
-    Doctorate
-    Tchenical
-    Specialization
-    Postgraduate
-    Extension
-    Training
-    Other
+  Bachelor
+  Master
+  MBA
+  Doctorate
+  Technical
+  Specialization
+  Postgraduate
+  Extension
+  Training
+  Other
 }
 
-enum AssessmentStatus {
-    DRAFT
-    PENDING
-    COMPLETED
-    ARCHIVED
+enum EvaluationStatus {
+  DRAFT
+  PENDING
+  COMPLETED
+  ARCHIVED
 }
 
 enum SalaryType {
-    MONTHLY
-    HOURLY
-    COMMISSION
+  MONTHLY
+  HOURLY
+  COMMISSION
 }
 
 enum AbsenceType {
-    VACATION
-    SICK_LEAVE
-    UNPAID_LEAVE
-    OTHER
+  VACATION
+  SICK_LEAVE
+  UNPAID_LEAVE
+  OTHER
 }
 
 enum ResourceType {
-    EMPLOYEE
-    ASSESSMENT
-    ABSENCE
-    POSITION
-    SALARY
-    DEPARTMENT
-    JOB
-    METRIC
-    COURSE
-    CAREER_PATH
-    CAREER_STEP
-    DISC
-    USER
-    ROLE
-    ORGANIZATION
-    ORGANIZATION_SETTINGS
+  EMPLOYEE
+  EVALUATION
+  ABSENCE
+  POSITION
+  SALARY
+  DEPARTMENT
+  JOB
+  METRIC
+  COURSE
+  CAREER_PATH
+  CAREER_STEP
+  USER
+  ROLE
+  ORGANIZATION
 }
 
 enum CareerStatus {
-    IN_PROGRESS
-    COMPLETED
-    CANCELLED
-    ON_HOLD
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  ON_HOLD
 }

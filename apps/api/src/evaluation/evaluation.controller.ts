@@ -7,8 +7,8 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { AssessmentService } from './assessment.service';
-import { CreateAssessmentDto } from './dto/create-assessment.dto';
+import { EvaluationService } from './evaluation.service';
+import { CreateEvaluationDto } from './dto/create-evaluation.dto';
 import { GetUser } from 'src/auth/decorator/user.decorator';
 import { ReqUser } from 'src/types/requser.type';
 import { AbilityGuard } from 'src/ability/abilities.guard';
@@ -20,74 +20,74 @@ import { Auditable } from 'src/audit/audit.decorator';
 import { ResourceType } from '@prisma/client';
 
 @UseGuards(JwTGuard, AbilityGuard)
-@Controller('assessment')
-export class AssessmentController {
-  constructor(private readonly assessmentService: AssessmentService) {}
+@Controller('evaluation')
+export class EvaluationController {
+  constructor(private readonly evaluationService: EvaluationService) {}
 
-  @CheckAbilities({ action: Action.Create, subject: 'Assessment' })
-  @Auditable(ResourceType.ASSESSMENT)
+  @CheckAbilities({ action: Action.Create, subject: 'Evaluation' })
+  @Auditable(ResourceType.EVALUATION)
   @Post()
-  create(@Body() createAssessmentDto: CreateAssessmentDto) {
-    console.log(createAssessmentDto);
-    return this.assessmentService.create(createAssessmentDto);
+  create(@Body() createEvaluationDto: CreateEvaluationDto) {
+    console.log(createEvaluationDto);
+    return this.evaluationService.create(createEvaluationDto);
   }
 
-  @CheckAbilities({ action: Action.Read, subject: 'Assessment' })
+  @CheckAbilities({ action: Action.Read, subject: 'Evaluation' })
   @Get()
   findAll(@GetUser() user_id: ReqUser) {
-    return this.assessmentService.findAll(user_id);
+    return this.evaluationService.findAll(user_id);
   }
 
-  @CheckAbilities({ action: Action.Read, subject: 'Assessment' })
+  @CheckAbilities({ action: Action.Read, subject: 'Evaluation' })
   @Get(':id')
   findOne(@Param('id') id: string, @GetUser() user_id: ReqUser) {
-    return this.assessmentService.findOne(id, user_id);
+    return this.evaluationService.findOne(id, user_id);
   }
 
   //TODO NAO DEIXAR ATUALIZAR NOTA?
   /*@Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateAssessmentDto: UpdateAssessmentDto,
+    @Body() updateEvaluationDto: UpdateEvaluationDto,
   ) {
-    return this.assessmentService.update(id, updateAssessmentDto);
+    return this.evaluationService.update(id, updateEvaluationDto);
   }*/
 
-  @CheckAbilities({ action: Action.Delete, subject: 'Assessment' })
-  @Auditable(ResourceType.ASSESSMENT)
+  @CheckAbilities({ action: Action.Delete, subject: 'Evaluation' })
+  @Auditable(ResourceType.EVALUATION)
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user_id: ReqUser) {
-    return this.assessmentService.remove(id, user_id);
+    return this.evaluationService.remove(id, user_id);
   }
 
-  @CheckAbilities({ action: Action.Read, subject: 'Assessment' })
+  @CheckAbilities({ action: Action.Read, subject: 'Evaluation' })
   @Get(':id/employee')
   findAllForOneEmployee(@Param('id') id: string, @GetUser() user_id: ReqUser) {
-    return this.assessmentService.findAllForOneEmployee(id, user_id);
+    return this.evaluationService.findAllForOneEmployee(id, user_id);
   }
 
   @CheckAbilities({ action: Action.Create, subject: 'DISC' })
   @Post('disc/create')
   createDisc(@Body() dto: CreateDiscDto, @GetUser() user: ReqUser) {
-    return this.assessmentService.createDisc(dto, user);
+    return this.evaluationService.createDisc(dto, user);
   }
 
   @CheckAbilities({ action: Action.Read, subject: 'DISC' })
   @Get('disc/:id')
   findOneDISC(@Param('id') id: string, @GetUser() user: ReqUser) {
-    return this.assessmentService.findOneDISC(id, user);
+    return this.evaluationService.findOneDISC(id, user);
   }
 
   @CheckAbilities({ action: Action.Read, subject: 'DISC' })
   @Get('disc/dep/:id')
   findDISCByDepartment(@Param('id') id: string, @GetUser() user: ReqUser) {
     console.log(user);
-    return this.assessmentService.findDISCByDepartment(id, user);
+    return this.evaluationService.findDISCByDepartment(id, user);
   }
 
   @CheckAbilities({ action: Action.Delete, subject: 'DISC' })
   @Delete('disc/:id')
   removeDISC(@Param('id') id: string, @GetUser() user: ReqUser) {
-    return this.assessmentService.removeDISC(id, user);
+    return this.evaluationService.removeDISC(id, user);
   }
 }

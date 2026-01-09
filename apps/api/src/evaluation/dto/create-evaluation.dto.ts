@@ -1,4 +1,4 @@
-import { AssessmentStatus } from '@prisma/client';
+import { EvaluationStatus } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
     ArrayMinSize,
@@ -24,7 +24,7 @@ export class GradeDto {
     score: number;
 }
 
-export class CreateAssessmentDto {
+export class CreateEvaluationDto {
     grade: [
         {
             score: number;
@@ -38,8 +38,8 @@ export class CreateAssessmentDto {
     @IsString()
     evaluator_id: string;
 
-    @IsEnum(AssessmentStatus)
-    status: AssessmentStatus;
+    @IsEnum(EvaluationStatus)
+    status: EvaluationStatus;
 
     @IsDateString()
     period_start: string;

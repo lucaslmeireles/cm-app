@@ -44,9 +44,8 @@ export class CreateEmployee {
   @IsOptional()
   profile_pic: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  departments: string[];
+  @IsString()
+  departments: string;
 
   @IsString()
   @IsOptional()

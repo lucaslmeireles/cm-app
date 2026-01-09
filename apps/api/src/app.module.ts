@@ -10,10 +10,10 @@ import { AbilityModule } from './ability/ability.module';
 import { OrgModule } from './org/org.module';
 import { MetricsModule } from './metric/metric.module';
 import { GradeModule } from './grade/grade.module';
-import { AssessmentModule } from './assessment/assessment.module';
+import { EvaluationModule } from './assessment/evaluation.module';
 import { DepartmentsModule } from './department/department.module';
 import { JobsModule } from './job/job.module';
-import { FormationsModule } from './formation/formation.module';
+import { FormationsModule } from './education/education.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { PositionsModule } from './position/position.module';
 import { CarrersModule } from './carrer/carrer.module';
@@ -23,35 +23,35 @@ import { EncryptionModule } from './encryption/encryption.module';
 import { AbsenceModule } from './absence/absence.module';
 
 @Module({
-    imports: [
-        EmployeeModule,
-        UserModule,
-        DbModule,
-        EmployeeModule,
-        ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-        AuthModule,
-        EncryptionModule,
-        AbilityModule,
-        AssessmentModule,
-        OrgModule,
-        MetricsModule,
-        GradeModule,
-        DepartmentsModule,
-        JobsModule,
+  imports: [
+    EmployeeModule,
+    UserModule,
+    DbModule,
+    EmployeeModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    AuthModule,
+    EncryptionModule,
+    AbilityModule,
+    EvaluationModule,
+    OrgModule,
+    MetricsModule,
+    GradeModule,
+    DepartmentsModule,
+    JobsModule,
 
-        FormationsModule,
-        AbsenceModule,
-        PositionsModule,
-        CarrersModule,
-        AuditModule,
-    ],
-    controllers: [AppController],
-    providers: [
-        AppService,
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: AuditInterceptor,
-        },
-    ],
+    FormationsModule,
+    AbsenceModule,
+    PositionsModule,
+    CarrersModule,
+    AuditModule,
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditInterceptor,
+    },
+  ],
 })
 export class AppModule {}

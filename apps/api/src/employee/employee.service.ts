@@ -56,7 +56,7 @@ export class EmployeeService {
           id: true,
           register: true,
           name: true,
-          current_position: {
+          position: {
             select: {
               name: true,
             },
@@ -88,7 +88,7 @@ export class EmployeeService {
 
   /**
    * This function gets one employee by its id.
-   * It also includes the department, courses, formations, assessments, job and manager
+   * It also includes the department, courses, formations, evaluations, job and manager
    * This function only allow the user to see the employee if he is the supervisor of the employee or the manager of the supervisor
    * @param id The id of the employee
    * @param user The current user from the JWT
@@ -114,17 +114,12 @@ export class EmployeeService {
           profile_pic: true,
           score: true,
           department: true,
-          formations: true,
+          educations: true,
           approved_absences: true,
-          current_position: true,
+          position: true,
           career_paths: true,
           manager: true,
           subordinates: true,
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
       ifEmpty(employee);
@@ -167,7 +162,7 @@ export class EmployeeService {
         },
         select: {
           name: true,
-          current_position: {
+          position: {
             select: {
               name: true,
             },
@@ -265,11 +260,9 @@ export class EmployeeService {
           phone_encrypted: this.encryptionHelper.encrypt(dto.phone),
           email_encrypted: this.encryptionHelper.encrypt(dto.email),
           department: {
-            connect: dto.departments.map((id) => {
-              return {
-                id: id,
-              };
-            }),
+            connect: {
+              id: dto.departments,
+            },
           },
           ...(dto.manager_id && {
             manager: {
@@ -282,7 +275,7 @@ export class EmployeeService {
             address_encrypted: this.encryptionHelper.encrypt(dto.address),
           }),
           ...(dto.position && {
-            current_position: {
+            position: {
               connect: {
                 id: dto.position,
               },
@@ -336,11 +329,9 @@ export class EmployeeService {
           }),
           ...(dto.departments && {
             department: {
-              set: dto.departments.map((id) => {
-                return {
-                  id: id,
-                };
-              }),
+              connect: {
+                id: dto.departments,
+              },
             },
           }),
           ...(dto.address && {
@@ -419,10 +410,8 @@ export class EmployeeService {
       const employeesByDep = await this.db.employee.findMany({
         where: {
           department: {
-            some: {
-              id: {
-                in: dto.department_id,
-              },
+            id: {
+              equals: dto.department_id[0],
             },
           },
           AND: [accessibleBy(this.ability(user)).Employee],
@@ -435,7 +424,7 @@ export class EmployeeService {
               name: true,
             },
           },
-          current_position: {
+          position: {
             select: {
               name: true,
             },
@@ -546,7 +535,7 @@ export class EmployeeService {
           id: true,
           name: true,
           entry_date: true,
-          current_position: {
+          position: {
             select: {
               name: true,
             },

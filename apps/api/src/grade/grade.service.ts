@@ -31,7 +31,7 @@ export class GradeService {
                             id: createGradeDto.metric_id,
                         },
                     },
-                    assessment: {
+                    evaluation: {
                         connect: {
                             id: createGradeDto.assement_id,
                         },
@@ -55,7 +55,7 @@ export class GradeService {
                     AND: [accessibleBy(this.ability(user)).Grade],
                 },
                 include: {
-                    assessment: true,
+                    evaluation: true,
                     employee: true,
                 },
             });
@@ -82,7 +82,7 @@ export class GradeService {
                     AND: [accessibleBy(this.ability(user)).Grade],
                 },
                 include: {
-                    assessment: true,
+                    evaluation: true,
                     employee: true,
                 },
             });
@@ -105,7 +105,7 @@ export class GradeService {
                     AND: [accessibleBy(this.ability(user)).Grade],
                 },
                 include: {
-                    assessment: true,
+                    evaluation: true,
                     employee: true,
                 },
             });
