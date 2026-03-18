@@ -101,9 +101,11 @@ export class CarrersService {
         select: {
           employee: {
             select: {
+              id: true,
               department: true,
               name: true,
               profile_pic: true,
+              position: true,
             },
           },
           description: true,
@@ -144,7 +146,7 @@ export class CarrersService {
         select: {
           employee: {
             select: {
-              current_position: true,
+              position: true,
               department: true,
               name: true,
               profile_pic: true,

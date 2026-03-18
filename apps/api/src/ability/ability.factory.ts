@@ -207,7 +207,7 @@ export class AbilityFactory {
           },
         },
       });
-      builder.can(Action.Manage, 'Assessment', {
+      builder.can(Action.Manage, 'Evaluation', {
         employee: {
           org: {
             id: user.tenant_id,
@@ -264,7 +264,7 @@ export class AbilityFactory {
     }
     if (user?.role.toUpperCase() === 'RH') {
       builder.can(Action.Create, 'AuditableEntity');
-      builder.can(Action.Read, ['Assessment', 'Grade']);
+      builder.can(Action.Read, ['Evaluation', 'Grade']);
       builder.can(Action.Manage, [
         'Absence',
         'CareerPath',

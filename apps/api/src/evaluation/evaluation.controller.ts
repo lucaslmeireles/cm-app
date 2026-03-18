@@ -65,29 +65,4 @@ export class EvaluationController {
   findAllForOneEmployee(@Param('id') id: string, @GetUser() user_id: ReqUser) {
     return this.evaluationService.findAllForOneEmployee(id, user_id);
   }
-
-  @CheckAbilities({ action: Action.Create, subject: 'DISC' })
-  @Post('disc/create')
-  createDisc(@Body() dto: CreateDiscDto, @GetUser() user: ReqUser) {
-    return this.evaluationService.createDisc(dto, user);
-  }
-
-  @CheckAbilities({ action: Action.Read, subject: 'DISC' })
-  @Get('disc/:id')
-  findOneDISC(@Param('id') id: string, @GetUser() user: ReqUser) {
-    return this.evaluationService.findOneDISC(id, user);
-  }
-
-  @CheckAbilities({ action: Action.Read, subject: 'DISC' })
-  @Get('disc/dep/:id')
-  findDISCByDepartment(@Param('id') id: string, @GetUser() user: ReqUser) {
-    console.log(user);
-    return this.evaluationService.findDISCByDepartment(id, user);
-  }
-
-  @CheckAbilities({ action: Action.Delete, subject: 'DISC' })
-  @Delete('disc/:id')
-  removeDISC(@Param('id') id: string, @GetUser() user: ReqUser) {
-    return this.evaluationService.removeDISC(id, user);
-  }
 }

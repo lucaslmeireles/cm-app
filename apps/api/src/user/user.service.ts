@@ -23,7 +23,7 @@ type UserById = {
   active: boolean;
   employee: {
     birthday: Date;
-    department: { name: string }[];
+    department: { name: string };
     name: string;
     profile_pic: string;
   };
