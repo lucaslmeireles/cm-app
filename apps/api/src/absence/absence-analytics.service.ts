@@ -1,6 +1,8 @@
 import { DbService } from 'src/db/db.service';
 import { AbilityFactory } from 'src/ability/ability.factory';
+import { HttpStatus, ForbiddenException, Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AbsenceAnalyticsService {
   constructor(
     private db: DbService,

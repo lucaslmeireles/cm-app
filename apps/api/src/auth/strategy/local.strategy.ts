@@ -14,11 +14,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(username: string, password: string) {
     const { data } = await this.authService.validateUser(username, password);
-    console.log('data', data);
     if (!data) {
       throw new UnauthorizedException('Wrong credentials');
     }
-    if (data.role_id !== 'SuperUser' && data.active === true) {
+    if (data.role_id !== 'SUPERUSER' && data.active === true) {
       return {
         id: data.id,
         role: data.role_id,
